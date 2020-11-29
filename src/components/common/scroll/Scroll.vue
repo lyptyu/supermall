@@ -16,10 +16,12 @@ export default {
       type: Number,
       default: 0
     },
-    pullUpLoad:{
-      type:Boolean,
+    pullUpLoad: {
+      type: Boolean,
       default: false
+
     }
+
   },
   mounted() {
     this.scroll = new BScroll(this.$refs.wrapper, {
@@ -28,14 +30,18 @@ export default {
       pullUpLoad: this.pullUpLoad
     })
     //监听滚动
-    this.scroll.on('scroll',position=>{
-      // console.log(position)
-      this.$emit('scroll',position)
-    })
-    //监听上啦
-    this.scroll.on('pullingUp',()=>{
-      this.$emit('pullingUp')
-    })
+    if (this.probeType === 2 || this.probeType === 3) {
+      this.scroll.on("scroll", position => {
+        this.$emit("scroll", position)
+      })
+      // console.log(this.scroll)
+      //监听上啦
+      if (this.pullUpLoad) {
+        this.scroll.on('pullingUp',()=>{
+          this.$emit('pullingUp')
+        })
+      }
+    }
   },
   data() {
     return {
@@ -44,10 +50,16 @@ export default {
   },
   methods: {
     scrollTo(x, y, time = 300) {
-      this.scroll.scrollTo(x, y, time)
+      this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time)
     },
-    finishPullUp(){
+    finishPullUp() {
       this.scroll.finishPullUp()
+    },
+    refresh() {
+      this.scroll && this.scroll.refresh()
+    },
+    getScrollY(){
+      return this.scroll ? this.scrolly :0
     }
   }
 }
