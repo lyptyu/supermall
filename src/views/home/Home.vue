@@ -96,7 +96,7 @@ export default {
       refresh()
 
     })
-
+    // console.log(this.saveY + 'mounted')
   },
   methods: {
     /*
@@ -155,10 +155,12 @@ export default {
     }
   },
   activated() {
+    // console.log(this.goods)
     this.$refs.scroll.scrollTo(0, this.saveY, 0)
     this.$refs.scroll.refresh()
   },
   deactivated() {
+    // console.log(this.$refs.scroll.getScrollY)
     this.saveY = this.$refs.scroll.getScrollY()
   }
 }
