@@ -1,12 +1,12 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" @load="imageLoad">
+    <img :src="showImage" @load="imageLoad" />
     <div class="goods-info">
       <p>
-        {{goodsItem.title}}
+        {{ goodsItem.title }}
       </p>
-      <span class="price">{{goodsItem.price}}</span>
-      <span class="collect">{{goodsItem.cfav}}</span>
+      <span class="price">{{ goodsItem.price }}</span>
+      <span class="collect">{{ goodsItem.cfav }}</span>
     </div>
   </div>
 </template>
@@ -18,19 +18,24 @@ export default {
     goodsItem: {
       type: Object,
       default() {
-        return {}
-      }
-    }
-  },
-  methods:{
-    imageLoad(){
-      this.$bus.$emit('itemImageLoad')
+        return {};
+      },
     },
-    itemClick(){
-      this.$router.push(`/detail/${this.goodsItem.iid}`)
-    }
-  }
-}
+  },
+  methods: {
+    imageLoad() {
+        this.$bus.$emit("itemImageLoad");
+    },
+    itemClick() {
+      this.$router.push(`/detail/${this.goodsItem.iid}`);
+    },
+  },
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.show.img;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -73,7 +78,7 @@ export default {
 }
 
 .goods-info .collect::before {
-  content: '';
+  content: "";
   position: absolute;
   left: -15px;
   top: -1px;

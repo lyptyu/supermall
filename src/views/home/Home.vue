@@ -43,9 +43,11 @@ import BackTop from "@/components/content/backTop/BackTop"
 
 import {getHomeMultidata, getHomeGoods} from "network/home"
 import {debounce} from "@/common/utils"
+import { itemListenerMixin } from '@/common/mixin'
 
 export default {
   name: "Home",
+  mixins:[itemListenerMixin],
   components: {
     GoodsList,
     HomeSwiper,
@@ -70,7 +72,7 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
     }
   },
   computed: {
@@ -88,15 +90,16 @@ export default {
 
   },
   mounted() {
-    //图片加载完成事件监听
-    const refresh = debounce(this.$refs.scroll.refresh, 200)
+    // //图片加载完成事件监听
+    // const refresh = debounce(this.$refs.scroll.refresh, 200)
+    // //保存监听的事件
+    // this.itemImgListener= () => {
+    //   // this.$refs.scroll.refresh()
+    //   refresh()
+    // }
 
-    this.$bus.$on("itemImageLoad", () => {
-      // this.$refs.scroll.refresh()
-      refresh()
-
-    })
-    // console.log(this.saveY + 'mounted')
+    // this.$bus.$on("itemImageLoad",this.itemImgListener)
+    // // console.log(this.saveY + 'mounted')
   },
   methods: {
     /*
@@ -149,6 +152,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+        this.refresh()
         this.$refs.scroll.finishPullUp();
       })
 
@@ -161,7 +165,10 @@ export default {
   },
   deactivated() {
     // console.log(this.$refs.scroll.getScrollY)
+    //保存y值
     this.saveY = this.$refs.scroll.getScrollY()
+    //取消全局事件的监听
+    this.$bus.$off('itemImgLoad',this.itemImgListener)
   }
 }
 </script>

@@ -1,4 +1,5 @@
 import {request} from "@/network/request"
+
 export function getDetail(iid){
   return request({
     url:'/detail',
@@ -7,6 +8,13 @@ export function getDetail(iid){
     }
   })
 }
+
+export function getRecommend() {
+  return request({
+    url:'/recommend'
+  })
+ }
+
 
 export class Goods {
   constructor(itemInfo, columns, services) {
