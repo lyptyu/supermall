@@ -1,25 +1,25 @@
 <template>
   <div id="detail">
     <detail-nav-bar
-      class="detail-nav"
-      @titleClick="titleClick"
-      ref="nav"
+        class="detail-nav"
+        @titleClick="titleClick"
+        ref="nav"
     ></detail-nav-bar>
     <scroll
-      class="content"
-      ref="scroll"
-      @scroll="contentScroll"
-      :probe-type="3"
+        class="content"
+        ref="scroll"
+        @scroll="contentScroll"
+        :probe-type="3"
     >
       <detail-swiper :top-images="topImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
-      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad" />
-      <detail-param-info :param-info="paramInfo" ref="params" />
-      <detail-comment-info :comment-info="commentInfo" ref="comment" />
-      <goods-list :goods="recommends" ref="recommend" />
+      <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
+      <detail-param-info :param-info="paramInfo" ref="params"/>
+      <detail-comment-info :comment-info="commentInfo" ref="comment"/>
+      <goods-list :goods="recommends" ref="recommend"/>
     </scroll>
-    <detail-bottom-bar />
+    <detail-bottom-bar @addCart="addToCart"/>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -44,8 +44,8 @@ import {
   GoodsParam,
   getRecommend,
 } from "@/network/detail";
-import { debounce } from "@/common/utils";
-import { itemListenerMixin, backTopMixin } from "@/common/mixin";
+import {debounce} from "@/common/utils";
+import {itemListenerMixin, backTopMixin} from "@/common/mixin";
 
 export default {
   name: "Detail",
@@ -88,9 +88,9 @@ export default {
       this.topImages = data.itemInfo.topImages;
       //获取商品信息
       this.goods = new Goods(
-        data.itemInfo,
-        data.columns,
-        data.shopInfo.services
+          data.itemInfo,
+          data.columns,
+          data.shopInfo.services
       );
       //获取店铺信息的对象
       this.shop = new Shop(data.shopInfo);
@@ -98,8 +98,8 @@ export default {
       this.detailInfo = data.detailInfo;
       //获取参数信息
       this.paramInfo = new GoodsParam(
-        data.itemParams.info,
-        data.itemParams.rule
+          data.itemParams.info,
+          data.itemParams.rule
       );
       //取出评论信息
       if (data.rate.cRate !== 0) {
@@ -158,9 +158,9 @@ export default {
         //   this.$refs.nav.currentIndex = this.currentIndex;
         // }
         if (
-          this.currentIndex !== i &&
-          positionY > this.themeTopYs[i] &&
-          positionY < this.themeTopYs[i + 1]
+            this.currentIndex !== i &&
+            positionY > this.themeTopYs[i] &&
+            positionY < this.themeTopYs[i + 1]
         ) {
           this.currentIndex = i;
           this.$refs.nav.currentIndex = this.currentIndex;
@@ -169,9 +169,21 @@ export default {
       }
       //是否显示回到顶部
       this.listenShowBackTop(position)
-    }
+    },
+    addToCart() {
+      //获取购物车需要展示的
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.newPrice
+      product.iid = this.iid
+      //将商品添加到购物车
+      this.$store.dispatch('addCart',product)
+    },
   },
-  mounted() {},
+  mounted() {
+  },
   destroyed() {
     this.$bus.$off("itemImgLoad", this.itemImgListener);
   },
