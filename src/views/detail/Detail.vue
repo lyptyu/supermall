@@ -176,7 +176,7 @@ export default {
       product.image = this.topImages[0]
       product.title = this.goods.title
       product.desc = this.goods.desc
-      product.price = this.goods.newPrice
+      product.price = this.goods.realPrice
       product.iid = this.iid
       //将商品添加到购物车
       this.$store.dispatch('addCart',product)
