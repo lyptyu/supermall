@@ -49,6 +49,8 @@ import {
 import {debounce} from "@/common/utils";
 import {itemListenerMixin, backTopMixin} from "@/common/mixin";
 
+
+
 export default {
   name: "Detail",
   mixins: [itemListenerMixin, backTopMixin],
@@ -63,6 +65,7 @@ export default {
     DetailCommentInfo,
     GoodsList,
     DetailBottomBar,
+
   },
   data() {
     return {
@@ -186,8 +189,10 @@ export default {
       //   console.log(res)
       // })
       this.addCart(product).then(res=>{
-        console.log(res)
+        this.$toast.show(res,2000)
+        // console.log(this.$toast)
       })
+
     },
   },
   mounted() {

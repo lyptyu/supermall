@@ -13,7 +13,7 @@
       合计: {{ totalPrice }}
     </div>
 
-    <div class="calculate">
+    <div class="calculate" @click="clacClick">
       去结算({{ checkLength }})
     </div>
   </div>
@@ -53,6 +53,13 @@ export default {
         this.cartList.forEach(item => item.checked = true)
       }
 
+    },
+    clacClick() {
+      if (!this.isSelectAll) {
+        this.$toast.show("请选择商品")
+      } else {
+        this.$toast.show("进入结算页面")
+      }
     }
   }
 }
