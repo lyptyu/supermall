@@ -4,30 +4,30 @@
       <div slot="center">购物街</div>
     </nav-bar>
     <tab-control
-      :titles="['流行', '新款', '精选']"
-      @tabClick="tabClick"
-      ref="tabControl1"
-      class="tab-control"
-      v-show="isTabFixed"
+        :titles="['流行', '新款', '精选']"
+        @tabClick="tabClick"
+        ref="tabControl1"
+        class="tab-control"
+        v-show="isTabFixed"
     ></tab-control>
     <scroll
-      class="content"
-      ref="scroll"
-      :probe-type="3"
-      @scroll="contentScroll"
-      :pull-up-load="true"
-      @pullingUp="loadMore"
+        class="content"
+        ref="scroll"
+        :probe-type="3"
+        @scroll="contentScroll"
+        :pull-up-load="true"
+        @pullingUp="loadMore"
     >
       <home-swiper
-        :banners="banners"
-        @swiperImageLoad="swiperImageLoad"
+          :banners="banners"
+          @swiperImageLoad="swiperImageLoad"
       ></home-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control
-        :titles="['流行', '新款', '精选']"
-        @tabClick="tabClick"
-        ref="tabControl2"
+          :titles="['流行', '新款', '精选']"
+          @tabClick="tabClick"
+          ref="tabControl2"
       ></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
@@ -45,13 +45,13 @@ import TabControl from "@/components/content/tabControl/TabControl";
 import GoodsList from "@/components/content/goods/GoodsList";
 import Scroll from "@/components/common/scroll/Scroll";
 
-import { getHomeMultidata, getHomeGoods } from "network/home";
-import { debounce } from "@/common/utils";
-import { itemListenerMixin,backTopMixin } from "@/common/mixin";
+import {getHomeMultidata, getHomeGoods} from "network/home";
+import {debounce} from "@/common/utils";
+import {itemListenerMixin, backTopMixin} from "@/common/mixin";
 
 export default {
   name: "Home",
-  mixins: [itemListenerMixin,backTopMixin],
+  mixins: [itemListenerMixin, backTopMixin],
   components: {
     GoodsList,
     HomeSwiper,
@@ -66,9 +66,9 @@ export default {
       banners: [],
       recommends: [],
       goods: {
-        pop: { page: 0, list: [] },
-        new: { page: 0, list: [] },
-        sell: { page: 0, list: [] },
+        pop: {page: 0, list: []},
+        new: {page: 0, list: []},
+        sell: {page: 0, list: []},
       },
       currentType: "pop",
       tabOffsetTop: 0,
@@ -128,6 +128,7 @@ export default {
       this.isShowBackTop = -position.y > 1000 ? true : false;
       //决定tabControl是否吸顶(position:fixed)
       this.listenShowBackTop(position)
+      this.isTabFixed = -position.y > this.tabOffsetTop ? true : false
     },
     swiperImageLoad() {
       //获取tabControl的offsetTop
