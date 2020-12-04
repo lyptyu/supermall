@@ -37,6 +37,8 @@ import DetailBottomBar from "@/views/detail/childComps/DetailBottomBar";
 import Scroll from "@/components/common/scroll/Scroll";
 import GoodsList from "@/components/content/goods/GoodsList";
 
+import {mapActions} from 'vuex'
+
 import {
   getDetail,
   Goods,
@@ -131,6 +133,7 @@ export default {
     }, 100);
   },
   methods: {
+    ...mapActions(['addCart']),
     imageLoad() {
       this.refresh();
       this.getThemeTopY();
@@ -179,7 +182,12 @@ export default {
       product.price = this.goods.realPrice
       product.iid = this.iid
       //将商品添加到购物车
-      this.$store.dispatch('addCart',product)
+      // this.$store.dispatch('addCart',product).then(res=>{
+      //   console.log(res)
+      // })
+      this.addCart(product).then(res=>{
+        console.log(res)
+      })
     },
   },
   mounted() {
